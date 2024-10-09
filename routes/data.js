@@ -10,7 +10,12 @@ router.get('/:slug', async (req, res) => {
     const data = req.params.slug.toLowerCase().replace(" ", "%20")
     let browser;
     try {
-        browser = await puppeteer.launch();
+        // browser = await puppeteer.launch();
+        browser = await puppeteer.launch({
+          executablePath: '/usr/bin/chromium-browser', // Path to Chromium on Render
+          headless: true, // Ensure it's running headless for server environments
+          args: ['--no-sandbox', '--disable-setuid-sandbox'] // Required for Puppeteer on Render
+        });
 
         const page = await browser.newPage();
 
